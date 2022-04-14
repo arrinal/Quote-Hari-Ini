@@ -6,19 +6,36 @@
 //
 
 import Foundation
-
+import Firebase
 
 
 
 class QuoteListVM {
     
-    var quoteList: [Quote] = [Quote(text: "Logan", author: "Paul")]
+    @Published var quoteList = [Quote]()
     
+    var filteredQuoteList: [Quote] {
+        guard quoteList.filter({$0.isViewed == false}).count != 0 else {
+           
+            for each in quoteList {
+                quoteList[each.id - 1].isViewed = true
+            }
+            
+            return quoteList
+        }
+        
+        return quoteList.filter({$0.isViewed == false})
+    }
     
-//    init() {
-//        self.quoteListVM = [Quote(text: "Logan", author: "Paul")]
-//    }
-    
+    func viewed(quoteID: Int) {
+        quoteList = quoteList.map { (quote) -> Quote in
+            var quote = quote
+            if quote.id == quoteList.filter({ $0.id == quoteID })[0].id {
+                quote.isViewed = true
+            }
+            return quote
+        }
+    }
 }
 
 

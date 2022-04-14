@@ -7,7 +7,10 @@
 
 import Foundation
 
-struct Quote: Codable {
-    let text: String
-    let author: String
+struct Quote: Codable, Identifiable {
+    var id: Int = 0
+    var firebaseID: String = ""
+    var quoteText: String = ""
+    var author: String = ""
+    var isViewed: Bool = false
 }

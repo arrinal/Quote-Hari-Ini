@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Firebase
 
 class ViewController: UIViewController {
     
@@ -31,7 +32,19 @@ class ViewController: UIViewController {
 
     let quoteTextView: UILabel = {
         let label = UILabel()
-        label.text = "Kebanggaan kita yang terbesar adalah bukan tidak pernah gagal, tetapi bangkit kembali setiap kali kita jatuh. \n(Confusius)"
+        label.text = "Kebanggaan kita yang terbesar adalah bukan tidak pernah gagal, tetapi bangkit kembali setiap kali kita jatuh"
+        label.font = UIFont(name: "Nunito-Bold", size: 15)
+        label.textAlignment = .center
+        label.lineBreakMode = .byWordWrapping
+        label.numberOfLines = 0
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        return label
+    }()
+    
+    let authorTextView: UILabel = {
+        let label = UILabel()
+        label.text = "(Confusius)"
         label.font = UIFont(name: "Nunito-Bold", size: 15)
         label.textAlignment = .center
         label.lineBreakMode = .byWordWrapping
@@ -45,7 +58,7 @@ class ViewController: UIViewController {
        let button = UIButton()
         button.setTitle("Other Quote", for: .normal)
         button.titleLabel?.font = UIFont(name: "Nunito-Bold", size: 15)
-        button.backgroundColor = .black
+        button.backgroundColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.5)
         button.layer.cornerRadius = 20
         button.layer.borderColor = CGColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -59,8 +72,6 @@ class ViewController: UIViewController {
         stackView.distribution = .fillEqually
         stackView.alignment = .center
         stackView.spacing = 0
-        stackView.layer.borderColor = CGColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
-        stackView.layer.borderWidth = 2
         stackView.translatesAutoresizingMaskIntoConstraints = false
         
         return stackView
@@ -71,6 +82,7 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view.
         
         setupUI()
+        getQuote()
         
         
     }
@@ -78,6 +90,7 @@ class ViewController: UIViewController {
     func setupUI() {
         quoteStackView.addSubview(quoteIconOpen)
         quoteStackView.addSubview(quoteTextView)
+        quoteStackView.addSubview(authorTextView)
         quoteStackView.addSubview(quoteIconClose)
         view.addSubview(quoteStackView)
         view.addSubview(buttonRandom)
@@ -93,22 +106,60 @@ class ViewController: UIViewController {
         quoteIconOpen.leadingAnchor.constraint(equalTo: quoteTextView.leadingAnchor).isActive = true
         
         quoteTextView.centerXAnchor.constraint(equalTo: quoteStackView.centerXAnchor).isActive = true
-        quoteTextView.centerYAnchor.constraint(equalTo: quoteStackView.centerYAnchor).isActive = true
         quoteTextView.leadingAnchor.constraint(equalTo: quoteStackView.leadingAnchor,constant: 50).isActive = true
         quoteTextView.trailingAnchor.constraint(equalTo: quoteStackView.trailingAnchor, constant: -50).isActive = true
         
-        quoteIconClose.topAnchor.constraint(equalTo: quoteTextView.bottomAnchor, constant: 50).isActive = true
+        authorTextView.centerXAnchor.constraint(equalTo: quoteStackView.centerXAnchor).isActive = true
+        authorTextView.topAnchor.constraint(equalTo: quoteTextView.bottomAnchor, constant: 10).isActive = true
+        
+        quoteIconClose.topAnchor.constraint(equalTo: authorTextView.bottomAnchor, constant: 50).isActive = true
         quoteIconClose.trailingAnchor.constraint(equalTo: quoteTextView.trailingAnchor).isActive = true
         
-        buttonRandom.topAnchor.constraint(equalTo: quoteStackView.bottomAnchor, constant: 30).isActive = true
+        buttonRandom.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -100).isActive = true
         buttonRandom.centerXAnchor.constraint(equalTo: quoteStackView.centerXAnchor).isActive = true
         buttonRandom.widthAnchor.constraint(equalToConstant: 130).isActive = true
         buttonRandom.heightAnchor.constraint(equalToConstant: 40).isActive = true
         buttonRandom.addTarget(self, action: #selector(otherQuote), for: .touchUpInside)
     }
     
-    @objc func otherQuote() {
-        quoteTextView.text = quoteListVM.quoteList[0].text
+    func getQuote() {
+        let db = Firestore.firestore()
+        let collection = db.collection("quote")
+        collection.getDocuments { snapshot, error in
+            if error == nil && snapshot != nil {
+                var quoteList = [Quote]()
+                
+                for doc in snapshot!.documents {
+                    var q = Quote()
+                    
+                    q.id = doc["id"] as? Int ?? 0
+                    q.firebaseID = doc["firebaseID"] as? String ?? ""
+                    q.author = doc["author"] as? String ?? ""
+                    q.quoteText = doc["quoteText"] as? String ?? ""
+                    q.isViewed = false
+                    
+                    quoteList.append(q)
+                }
+                
+                DispatchQueue.main.async {
+                    self.quoteListVM.quoteList = quoteList
+                }
+                
+                self.buttonRandom.backgroundColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+            }
+        }
+    }
+    
+    @objc func otherQuote() { 
+        
+        guard quoteListVM.quoteList.count > 1 else { return }
+        let filteredQuoteList = quoteListVM.filteredQuoteList
+        let random = Int.random(in: 0..<(filteredQuoteList.count))
+        let filteredQuoteID = filteredQuoteList[random].id
+        
+        quoteTextView.text = quoteListVM.quoteList.filter({$0.id == filteredQuoteID}).first?.quoteText
+        authorTextView.text = "(\(quoteListVM.quoteList.filter({$0.id == filteredQuoteID}).first?.author ?? ""))"
+        quoteListVM.viewed(quoteID: filteredQuoteID)
     }
     
 }
