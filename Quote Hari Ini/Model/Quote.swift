@@ -12,5 +12,6 @@ struct Quote: Codable, Identifiable {
     var firebaseID: String = ""
     var quoteText: String = ""
     var author: String = ""
+    var isQuoteOfTheDay: Bool = false
     var isViewed: Bool = false
 }

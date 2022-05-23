@@ -32,7 +32,7 @@ class ViewController: UIViewController {
 
     let quoteTextView: UILabel = {
         let label = UILabel()
-        label.text = "Kebanggaan kita yang terbesar adalah bukan tidak pernah gagal, tetapi bangkit kembali setiap kali kita jatuh"
+        label.text = ""
         label.font = UIFont(name: "Nunito-Bold", size: 15)
         label.textAlignment = .center
         label.lineBreakMode = .byWordWrapping
@@ -44,7 +44,7 @@ class ViewController: UIViewController {
     
     let authorTextView: UILabel = {
         let label = UILabel()
-        label.text = "(Confusius)"
+        label.text = ""
         label.font = UIFont(name: "Nunito-Bold", size: 15)
         label.textAlignment = .center
         label.lineBreakMode = .byWordWrapping
@@ -60,6 +60,7 @@ class ViewController: UIViewController {
         button.titleLabel?.font = UIFont(name: "Nunito-Bold", size: 15)
         button.backgroundColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.5)
         button.layer.cornerRadius = 20
+        button.layer.borderWidth = 2
         button.layer.borderColor = CGColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
         button.translatesAutoresizingMaskIntoConstraints = false
         
@@ -83,8 +84,7 @@ class ViewController: UIViewController {
         
         setupUI()
         getQuote()
-        
-        
+        detectAppearanceMode()
     }
 
     func setupUI() {
@@ -136,6 +136,7 @@ class ViewController: UIViewController {
                     q.firebaseID = doc["firebaseID"] as? String ?? ""
                     q.author = doc["author"] as? String ?? ""
                     q.quoteText = doc["quoteText"] as? String ?? ""
+                    q.isQuoteOfTheDay = doc["isQuoteOfTheDay"] as? Bool ?? false
                     q.isViewed = false
                     
                     quoteList.append(q)
@@ -143,9 +144,13 @@ class ViewController: UIViewController {
                 
                 DispatchQueue.main.async {
                     self.quoteListVM.quoteList = quoteList
+                    self.quoteTextView.text = self.quoteListVM.quoteList.filter({$0.isQuoteOfTheDay}).first?.quoteText ?? ""
+                    self.authorTextView.text = "(\(self.quoteListVM.quoteList.filter({$0.isQuoteOfTheDay}).first?.author ?? ""))"
+                    self.quoteListVM.viewed(quoteID: self.quoteListVM.quoteList.filter({$0.isQuoteOfTheDay})[0].id)
                 }
                 
                 self.buttonRandom.backgroundColor = UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 1)
+                
             }
         }
     }
@@ -156,6 +161,8 @@ class ViewController: UIViewController {
         let filteredQuoteList = quoteListVM.filteredQuoteList
         let random = Int.random(in: 0..<(filteredQuoteList.count))
         let filteredQuoteID = filteredQuoteList[random].id
+        
+        
         
         quoteTextView.text = quoteListVM.quoteList.filter({$0.id == filteredQuoteID}).first?.quoteText
         authorTextView.text = "(\(quoteListVM.quoteList.filter({$0.id == filteredQuoteID}).first?.author ?? ""))"
@@ -179,3 +186,27 @@ extension UIImage {
     }
 }
 
+
+extension ViewController {
+    
+    func detectAppearanceMode() {
+        switch UIScreen.main.traitCollection.userInterfaceStyle {
+        case .light, .unspecified:
+            self.quoteIconOpen.image = UIImage(named: "quote-open-icon")?.resize(70, 70)
+            self.quoteIconClose.image = UIImage(named: "quote-close-icon")?.resize(70, 70)
+            
+        case .dark:
+            self.quoteIconOpen.image = UIImage(named: "quote-open-icon-dark-mode")?.resize(70, 70)
+            self.quoteIconClose.image = UIImage(named: "quote-close-icon-dark-mode")?.resize(70, 70)
+            
+        @unknown default:
+            self.quoteIconOpen.image = UIImage(named: "quote-open-icon")?.resize(70, 70)
+            self.quoteIconClose.image = UIImage(named: "quote-close-icon")?.resize(70, 70)
+        }
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        detectAppearanceMode()
+    }
+}

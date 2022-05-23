@@ -18,7 +18,7 @@ class QuoteListVM {
         guard quoteList.filter({$0.isViewed == false}).count != 0 else {
            
             for each in quoteList {
-                quoteList[each.id - 1].isViewed = true
+                quoteList[each.id - 1].isViewed = false
             }
             
             return quoteList
@@ -38,34 +38,3 @@ class QuoteListVM {
     }
 }
 
-
-
-//class QuoteListVM {
-//
-//    var quoteListVM: [QuoteVM]
-//    init() {
-//        self.quoteListVM = [QuoteVM(quote: Quote(text: "Bacot", author: "Lonte"))]
-//    }
-//}
-//
-//extension QuoteListVM {
-//
-//    func eachQuoteVM(at index: Int) -> QuoteVM {
-//        return self.quoteListVM[index]
-//    }
-//}
-//
-//struct QuoteVM {
-//    let quote: Quote
-//}
-//
-//extension QuoteVM {
-//
-//    var text: String {
-//        return quote.text
-//    }
-//
-//    var author: String {
-//        return quote.author
-//    }
-//}

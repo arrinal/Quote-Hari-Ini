@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		701E274527FD704B0096B446 /* Quote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701E274427FD704B0096B446 /* Quote.swift */; };
 		701E274727FD73CE0096B446 /* QuoteVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 701E274627FD73CE0096B446 /* QuoteVM.swift */; };
+		703918AD280817EE00E50CF6 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 703918AC280817EE00E50CF6 /* FirebaseMessaging */; };
 		7045DFB527FC386000C8E894 /* Nunito-Italic-VariableFont_wght.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7045DFB327FC386000C8E894 /* Nunito-Italic-VariableFont_wght.ttf */; };
 		7045DFB627FC386000C8E894 /* Nunito-VariableFont_wght.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7045DFB427FC386000C8E894 /* Nunito-VariableFont_wght.ttf */; };
 		7050B30F2805A1E700EFBB12 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7050B30E2805A1E700EFBB12 /* GoogleService-Info.plist */; };
@@ -25,6 +26,7 @@
 /* Begin PBXFileReference section */
 		701E274427FD704B0096B446 /* Quote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Quote.swift; sourceTree = "<group>"; };
 		701E274627FD73CE0096B446 /* QuoteVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteVM.swift; sourceTree = "<group>"; };
+		703918AE28081F4200E50CF6 /* Quote Hari Ini.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Quote Hari Ini.entitlements"; sourceTree = "<group>"; };
 		7045DFB327FC386000C8E894 /* Nunito-Italic-VariableFont_wght.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nunito-Italic-VariableFont_wght.ttf"; sourceTree = "<group>"; };
 		7045DFB427FC386000C8E894 /* Nunito-VariableFont_wght.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nunito-VariableFont_wght.ttf"; sourceTree = "<group>"; };
 		7050B30E2805A1E700EFBB12 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -43,6 +45,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				703918AD280817EE00E50CF6 /* FirebaseMessaging in Frameworks */,
 				7050B3122805A4B000EFBB12 /* FirebaseAnalytics in Frameworks */,
 				7050B3142805A4B000EFBB12 /* FirebaseFirestore in Frameworks */,
 			);
@@ -75,6 +78,13 @@
 			path = "View Model";
 			sourceTree = "<group>";
 		};
+		703918AB280817EE00E50CF6 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		7045DFB727FC386900C8E894 /* Font */ = {
 			isa = PBXGroup;
 			children = (
@@ -84,11 +94,23 @@
 			path = Font;
 			sourceTree = "<group>";
 		};
+		7057531D280BFBD40000FE85 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				7082317A27B2301A007A61CE /* Main.storyboard */,
+				7082317D27B2301B007A61CE /* Assets.xcassets */,
+				7045DFB727FC386900C8E894 /* Font */,
+				7082317F27B2301B007A61CE /* LaunchScreen.storyboard */,
+			);
+			path = Assets;
+			sourceTree = "<group>";
+		};
 		7082316827B2301A007A61CE = {
 			isa = PBXGroup;
 			children = (
 				7082317327B2301A007A61CE /* Quote Hari Ini */,
 				7082317227B2301A007A61CE /* Products */,
+				703918AB280817EE00E50CF6 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -103,15 +125,13 @@
 		7082317327B2301A007A61CE /* Quote Hari Ini */ = {
 			isa = PBXGroup;
 			children = (
+				703918AE28081F4200E50CF6 /* Quote Hari Ini.entitlements */,
 				7082317427B2301A007A61CE /* AppDelegate.swift */,
 				7082317627B2301A007A61CE /* SceneDelegate.swift */,
 				701E274327FD700C0096B446 /* Model */,
 				701E274827FD74880096B446 /* View Model */,
 				701E274027FD6FF70096B446 /* Controller */,
-				7082317A27B2301A007A61CE /* Main.storyboard */,
-				7082317D27B2301B007A61CE /* Assets.xcassets */,
-				7045DFB727FC386900C8E894 /* Font */,
-				7082317F27B2301B007A61CE /* LaunchScreen.storyboard */,
+				7057531D280BFBD40000FE85 /* Assets */,
 				7050B30E2805A1E700EFBB12 /* GoogleService-Info.plist */,
 				7082318227B2301B007A61CE /* Info.plist */,
 			);
@@ -137,6 +157,7 @@
 			packageProductDependencies = (
 				7050B3112805A4B000EFBB12 /* FirebaseAnalytics */,
 				7050B3132805A4B000EFBB12 /* FirebaseFirestore */,
+				703918AC280817EE00E50CF6 /* FirebaseMessaging */,
 			);
 			productName = "Quote Hari Ini";
 			productReference = 7082317127B2301A007A61CE /* Quote Hari Ini.app */;
@@ -350,6 +371,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Quote Hari Ini/Quote Hari Ini.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = C625QPFG8X;
@@ -358,6 +380,7 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -369,7 +392,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -378,6 +401,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Quote Hari Ini/Quote Hari Ini.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = C625QPFG8X;
@@ -386,6 +410,7 @@
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -397,7 +422,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -436,6 +461,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		703918AC280817EE00E50CF6 /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7050B3102805A4B000EFBB12 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
+		};
 		7050B3112805A4B000EFBB12 /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 7050B3102805A4B000EFBB12 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
